@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ВЕТЕР — Умные окна</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #454343;
+      --accent: #96C9CD;
+      --text: white;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+
+    a, button {
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      background: none;
+      font: inherit;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: rgba(69, 67, 67, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 50;
+      border-bottom: 1px solid var(--gray-600);
+    }
+
+    .header-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 4rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    nav.desktop {
+      display: none;
+    }
+
+    nav.desktop a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #d1d5db;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+
+    nav.desktop a:hover,
+    nav.desktop a.active {
+      color: var(--accent);
+    }
+
+    .mobile-menu-btn {
+      color: #d1d5db;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-btn:hover {
+      color: var(--accent);
+    }
+
+    .mobile-nav {
+      display: none;
+      background-color: var(--bg);
+      border-top: 1px solid var(--gray-600);
+      padding: 1rem 0;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
+
+    .mobile-nav a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      color: #d1d5db;
+      text-align: left;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--accent);
+    }
+
+    /* Hero */
+    #главная {
+      padding-top: 4rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background-image: url('https://raw.githubusercontent.com/InnaBIBI/my-website-assets/main/5206446239560892612.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    #главная::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      }
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      line-height: 1.2;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    @media (min-width: 1024px) {
+      .hero h1 {
+        font-size: 3.75rem;
+      }
+    }
+
+    .hero h1 .accent {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      margin-top: 1.5rem;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (min-width: 640px) {
+      .hero-buttons {
+        flex-direction: row;
+      }
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--bg);
+      padding: 1rem 2rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      transition: background 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: #85b8bc;
+    }
+
+    .btn-outline {
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 1rem 2rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      transition: background 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(150, 201, 205, 0.1);
+    }
+
+    /* Sections */
+    section {
+      padding: 5rem 1.5rem;
+    }
+
+    .section-container {
+      max-width: 80rem;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .advantages-grid,
+    .features-grid,
+    .testimonials-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .advantages-grid,
+      .features-grid,
+      .testimonials-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .card {
+      background-color: rgba(55, 65, 81, 0.5);
+      border: 1px solid var(--gray-600);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+    }
+
+    .card-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon svg,
+    .feature-icon svg {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .advantage-icon svg {
+      color: var(--accent);
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+      color: var(--accent);
+    }
+
+    .feature-card h3 {
+      color: var(--text);
+    }
+
+    .feature-icon {
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .card p {
+      color: #d1d5db;
+    }
+
+    .loading,
+    .no-testimonials {
+      text-align: center;
+      font-size: 1.25rem;
+      color: #d1d5db;
+    }
+
+    /* Contact */
+    .contact-form {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      background-color: #4b5563;
+      border: 1px solid #4b5563;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-textarea {
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background-color: var(--accent);
+      color: var(--bg);
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover {
+      background-color: #85b8bc;
+    }
+
+    .contact-email {
+      margin-top: 2rem;
+      text-align: center;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .contact-email svg {
+      color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--gray-800);
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--gray-700);
+    }
+
+    .footer-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-container {
+        flex-direction: row;
+      }
+    }
+
+    .footer-logo {
+      font-size: 1.125rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .footer-copyright {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+
+    /* Mobile nav toggle */
+    @media (min-width: 768px) {
+      nav.desktop {
+        display: flex;
+      }
+      .mobile-menu-btn,
+      .mobile-nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">ВЕТЕР</div>
+      <nav class="desktop">
+        <a href="#главная" class="nav-link">Главная</a>
+        <a href="#преимущества" class="nav-link">Преимущества</a>
+        <a href="#возможности" class="nav-link">Возможности</a>
+        <a href="#отзывы" class="nav-link">Отзывы</a>
+        <a href="#контакты" class="nav-link">Контакты</a>
+      </nav>
+      <button class="mobile-menu-btn" id="menu-toggle">
+        <!-- Menu Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <a href="#главная">Главная</a>
+      <a href="#преимущества">Преимущества</a>
+      <a href="#возможности">Возможности</a>
+      <a href="#отзывы">Отзывы</a>
+      <a href="#контакты">Контакты</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section id="главная">
+    <div class="hero-content">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1><span class="accent">Умные окна</span> для идеального микроклимата</h1>
+          <p>Автоматизированная система контроля окон на основе датчиков температуры, влажности и качества воздуха</p>
+          <div class="hero-buttons">
+            <a href="#контакты" class="btn-primary">Заказать систему</a>
+            <a href="#возможности" class="btn-outline">Узнать больше</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advantages -->
+  <section id="преимущества">
+    <div class="section-container">
+      <h2 class="section-title">Преимущества системы</h2>
+      <div class="advantages-grid">
+        <div class="card">
+          <div class="card-icon advantage-icon">
+            <!-- Zap -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#96C9CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <h3>Энергоэффективность</h3>
+          <p>Экономит 45% энергии, чем превосходит аналоги</p>
+        </div>
+        <div class="card">
+          <div class="card-icon advantage-icon">
+            <!-- Leaf -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#96C9CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 13.05 17 13.05c0 3.5-5 6.95-5 6.95Z"></path><path d="M21 12c0 3.5-5 6.95-5 6.95"></path></svg>
+          </div>
+          <h3>Здоровый микроклимат</h3>
+          <p>Автоматический контроль влажности и температуры для комфортного самочувствия</p>
+        </div>
+        <div class="card">
+          <div class="card-icon advantage-icon">
+            <!-- Clock -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#96C9CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <h3>Автоматизация 24/7</h3>
+          <p>Система работает круглосуточно, не требуя вашего участия и контроля</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="возможности" style="background-color: rgba(31, 41, 55, 0.3);">
+    <div class="section-container">
+      <h2 class="section-title">Возможности системы</h2>
+      <div class="features-grid">
+        <div class="card feature-card">
+          <div class="feature-icon">
+            <!-- Wifi -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"></path><path d="M2 12.5a9.5 9.5 0 1 1 17.943 3.23"></path><path d="M5.5 15a6 6 0 1 1 10.938 1.943"></path></svg>
+          </div>
+          <h3>Умное управление</h3>
+          <p>Беспроводной пульт с радиусом действия до 50 метров для удобного управления</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">
+            <!-- Thermometer -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"></path></svg>
+          </div>
+          <h3>Датчики микроклимата</h3>
+          <p>Мониторинг температуры, контроль влажности и качества воздуха в реальном времени</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">
+            <!-- Settings -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+          <h3>Гибкие сценарии</h3>
+          <p>Настройка автоматических режимов по расписанию или условиям окружающей среды</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">
+            <!-- Smartphone -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>
+          </div>
+          <h3>Мобильное приложение</h3>
+          <p>Управляйте окнами из любой точки мира через iOS и Android приложение</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">
+            <!-- Shield -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <h3>Безопасность</h3>
+          <p>Защита от взлома и осадков</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">
+            <!-- Clock -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <h3>Режимы работы</h3>
+          <p>Ночные, дневные и экономичные режимы работы</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="отзывы">
+    <div class="section-container">
+      <h2 class="section-title">Отзывы клиентов</h2>
+      <div id="testimonials-container">
+        <div class="loading">Загрузка отзывов...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="контакты" style="background-color: rgba(31, 41, 55, 0.3);">
+    <div class="section-container">
+      <h2 class="section-title">Свяжитесь с нами</h2>
+      <p style="text-align: center; font-size: 1.25rem; color: #d1d5db; max-width: 48rem; margin: 0 auto 2rem;">
+        Оставьте заявку и мы свяжемся с вами в течение 1 часа
+      </p>
+      <div class="contact-form">
+        <form action="https://formspree.io/f/movprnyv" method="POST">
+          <div class="form-group">
+            <label for="name">Имя</label>
+            <input type="text" name="Имя" id="name" class="form-input" placeholder="Ваше имя" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="tel" name="Телефон" id="phone" class="form-input" placeholder="+7 (___) ___-__-__">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="Email" id="email" class="form-input" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="comment">Комментарий</label>
+            <textarea name="Комментарий" id="comment" rows="4" class="form-textarea" placeholder="Расскажите о вашем проекте..."></textarea>
+          </div>
+          <button type="submit" class="submit-btn">
+            Отправить заявку
+            <!-- ChevronRight -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </form>
+        <div class="contact-email">
+          <!-- Mail -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+          <span>veter_company@list.ru</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">ВЕТЕР</div>
+      <div class="footer-copyright">
+        <!-- MessageSquare -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>© 2025 ВЕТЕР. Все права защищены.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-nav').classList.toggle('open');
+      const icon = document.querySelector('#menu-toggle svg');
+      if (document.getElementById('mobile-nav').classList.contains('open')) {
+        // Switch to X
+        icon.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+      } else {
+        // Switch back to Menu
+        icon.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+      }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('#mobile-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-nav').classList.remove('open');
+        document.querySelector('#menu-toggle svg').outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+      });
+    });
+
+    // Smooth scroll for desktop nav
+    document.querySelectorAll('nav.desktop a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        document.querySelector(targetId).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Load testimonials
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('https://sheetdb.io/api/v1/3crrgr1p5tsy5')
+        .then(response => {
+          if (!response.ok) throw new Error('Ошибка сети');
+          return response.json();
+        })
+        .then(data => {
+          const published = data.filter(item =>
+            item.published && item.published.trim().toLowerCase() === 'yes'
+          );
+          const container = document.getElementById('testimonials-container');
+          if (published.length === 0) {
+            container.innerHTML = '<div class="no-testimonials">Отзывов пока нет.</div>';
+            return;
+          }
+          let html = '<div class="testimonials-grid">';
+          published.forEach(t => {
+            const stars = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" style="color: #fbbf24;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'.repeat(parseInt(t.rating) || 0);
+            html += `
+              <div class="card">
+                <div style="display:flex; gap:0.25rem; margin-bottom:1rem;">${stars}</div>
+                <p style="color:#d1d5db; margin-bottom:1rem; font-style:italic;">"${t.text}"</p>
+                <div style="display:flex; align-items:center;">
+                  <div style="background:#4b5563; width:3rem; height:3rem; border-radius:9999px; display:flex; align-items:center; justify-content:center; margin-right:1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#96C9CD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  </div>
+                  <div>
+                    <p style="font-weight:600;">${t.name}</p>
+                    <p style="color:#9ca3af; font-size:0.875rem;">${t.role}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += '</div>';
+          container.innerHTML = html;
+        })
+        .catch(() => {
+          document.getElementById('testimonials-container').innerHTML = '<div class="no-testimonials">Не удалось загрузить отзывы.</div>';
+        });
+    });
+  </script>
+</body>
+</html>
